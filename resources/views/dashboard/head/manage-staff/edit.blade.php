@@ -35,13 +35,25 @@
                         >
                     </div>
 
+                    <!-- Staff Province Field -->
+                    <div class="space-y-2">
+                        <label for="province" class="block text-sm font-medium text-gray-300">Provinsi Staff</label>
+                        <select
+                            id="province"
+                            name="staff_province"
+                            class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-gray-100
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        >
+                            <option value="">Pilih Provinsi</option>
+                        </select>
+                    </div>
+
                     <!-- Password Group -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Password Field -->
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-300">
-                                Password Baru
-                                <span class="text-gray-500">(opsional)</span>
+                                Password Baru <span class="text-gray-500">(opsional)</span>
                             </label>
                             <input
                                 type="password"
@@ -90,4 +102,28 @@
             </div>
         </div>
     </div>
+
+<script>
+        async function fetchWilayah(endpoint, targetSelect) {
+            const url = `https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const select = document.getElementById(targetSelect);
+            select.innerHTML = '<option value="">Pilih Provinsi</option>';
+            data.forEach(item => {
+                select.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Memanggil API untuk mengambil data provinsi,
+            // kemudian set nilai yang sudah tersimpan pada user (jika ada)
+            fetchWilayah('provinces', 'province').then(() => {
+                const selectedProvince = "{{ old('staff_province', $user->staff_province) }}";
+                if(selectedProvince) {
+                    document.getElementById('province').value = selectedProvince;
+                }
+            });
+        });
+    </script>
 </x-app-layout>

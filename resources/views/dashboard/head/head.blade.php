@@ -21,9 +21,6 @@
                         <span>Pending Reports</span>
                         <span class="text-blue-400">{{ $pendingReports }}</span>
                     </p>
-                    <div class="mt-2 h-1 bg-gray-700 rounded-full">
-                        <div class="h-1 bg-blue-500 rounded-full" style="width: {{ ($pendingReports/$totalReports)*100 }}%"></div>
-                    </div>
                 </div>
             </div>
 
@@ -80,7 +77,7 @@
     <script>
         const ctx = document.getElementById('provinceChart').getContext('2d');
         new Chart(ctx, {
-            type: 'bar',
+            type: 'pie',
             data: {
                 labels: {!! json_encode($complaintsPerProvince->keys()) !!},
                 datasets: [{

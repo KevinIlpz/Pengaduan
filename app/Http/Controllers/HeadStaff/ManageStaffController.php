@@ -28,6 +28,7 @@ class ManageStaffController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'staff_province' => 'required|string|max:255',
         ]);
 
         User::create([
@@ -35,6 +36,7 @@ class ManageStaffController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'staff',
+            'staff_province' => $validated['staff_province'] ?? null
         ]);
 
         return redirect()->route('headstaff.staff.index')->with('success', 'Staff berhasil ditambahkan.');
@@ -54,10 +56,12 @@ class ManageStaffController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|confirmed',
+            'staff_province' => 'required|string|max:255',
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->staff_province = $validated['staff_province'] ?? null;
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);

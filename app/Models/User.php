@@ -15,20 +15,20 @@ class User extends Authenticatable
     public function isGuest() {
         return $this->role === 'user';
     }
-    
+
     public function isStaff() {
         return $this->role === 'staff';
     }
-    
+
     public function isHeadStaff() {
         return $this->role === 'head_staff';
-    }    
-    
+    }
+
     public function likedReports()
     {
         return $this->belongsToMany(Report::class, 'report_likes')->withTimestamps();
     }
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +40,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'staff_province'
     ];
 
     /**

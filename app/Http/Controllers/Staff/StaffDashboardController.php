@@ -12,24 +12,29 @@ class StaffDashboardController extends Controller
 {
     public function index()
     {
-        $reports = Report::latest()->paginate(10);
+        $staffProvince = Auth::user()->staff_province;
+
+        $reports = Report::where('province', $staffProvince)
+                         ->latest()
+                         ->paginate(10);
+
         return view('dashboard.staff.staff', compact('reports'));
     }
+
 
     public function updateStatus(Request $request, Report $report)
     {
         $request->validate([
             'status' => 'required|in:PROSES,DITOLAK',
         ]);
-    
+
         $report->status = $request->status;
         $report->save();
-    
-        // Kalau status PROSES dan flag redirect dikirim, redirect ke detail
+
         if ($request->status === 'PROSES' && $request->has('redirect_to_detail')) {
             return redirect()->route('staff.reports.show', $report)->with('success', 'Laporan diproses. Silakan tambahkan progress.');
         }
-    
+
         return redirect()->back()->with('success', 'Status laporan berhasil diperbarui.');
     }
 

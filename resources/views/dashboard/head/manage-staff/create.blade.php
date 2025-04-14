@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="py-8 bg-gray-900 min-h-screen">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-
             <!-- Form Container -->
             <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-xl">
                 <form action="{{ route('headstaff.staff.store') }}" method="POST" class="space-y-8">
@@ -33,9 +32,22 @@
                         >
                     </div>
 
+                    <!-- Staff Province Field -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-300">Provinsi Staff</label>
+                        <select
+                            name="staff_province"
+                            id="staff_province"
+                            class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-gray-100
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            required
+                        >
+                            <option value="">Memuat daftar provinsi...</option>
+                        </select>
+                    </div>
+
                     <!-- Password Group -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Password Field -->
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-300">Password</label>
                             <input
@@ -48,7 +60,6 @@
                             >
                         </div>
 
-                        <!-- Confirm Password Field -->
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-300">Konfirmasi Password</label>
                             <input
@@ -75,6 +86,7 @@
                             <span>Simpan Data Staff</span>
                         </div>
                     </button>
+
                     <div class="mb-8">
                         <a href="{{ route('headstaff.staff.index') }}" class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -87,4 +99,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectProvinsi = document.getElementById('staff_province');
+
+            fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
+                .then(response => response.json())
+                .then(data => {
+                    selectProvinsi.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+                    data.forEach(provinsi => {
+                        const option = document.createElement('option');
+                        option.value = provinsi.name;
+                        option.textContent = provinsi.name;
+                        selectProvinsi.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Gagal memuat provinsi:', error);
+                    selectProvinsi.innerHTML = '<option value="">Gagal memuat provinsi</option>';
+                });
+        });
+    </script>
+
 </x-app-layout>

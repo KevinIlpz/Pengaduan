@@ -43,7 +43,6 @@ class DashboardController extends Controller
         $totalReports = Report::count();
         $pendingReports = Report::where('status', 'PROSES')->count();
 
-        // Data laporan per provinsi (hanya yang punya laporan)
         $complaintsPerProvince = Report::select('province', DB::raw('count(*) as total'))
             ->groupBy('province')
             ->pluck('total', 'province');

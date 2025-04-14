@@ -8,12 +8,11 @@ use App\Http\Controllers\HeadStaff\ManageStaffController;
 use App\Http\Controllers\HeadStaff\HeadStaffDashboardController;
 use App\Http\Controllers\Staff\StaffDashboardController;
 use App\Http\Controllers\Staff\ExportReportController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/dashboard/user', [DashboardController::class, 'userDashboard'])->name('dashboard.user');
